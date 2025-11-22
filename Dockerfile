@@ -1,11 +1,12 @@
 FROM alpine:latest
 
-# Устанавливаем Dante SOCKS5 сервер
-RUN apk add --no-cache dante-server bash
+RUN apk add --no-cache dante-server python3 py3-pip bash
+RUN pip3 install aiohttp
 
-# Копируем конфиг
 COPY sockd.conf /etc/sockd.conf
 COPY start.sh /start.sh
+COPY health.py /health.py
+
 RUN chmod +x /start.sh
 
 EXPOSE 1081
