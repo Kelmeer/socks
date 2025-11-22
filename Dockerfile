@@ -1,10 +1,10 @@
 FROM mitmproxy/mitmproxy:latest
 
-# Открываем порт для SOCKS5 и для обычного прокси
-EXPOSE 8080 1080
+# Bind на PORT из env (Render даёт $PORT)
+EXPOSE $PORT
 
-# Запускаем в режиме SOCKS5 + HTTP прокси одновременно
-ENTRYPOINT ["mitmdump", "--mode", "socks5", "--listen-host", "0.0.0.0", "--listen-port", "1080", "--set", "upstream=http://0.0.0.0:8080"]
+# Запуск в режиме reverse proxy (HTTP incoming → SOCKS5 upstream) или чистый socks, но с listen на $PORT
+ENTRYPOINT ["sh", "-c", "mitmdump --mode socks5 --listen-host 0.0.0.0 --listen-port $PORT"]
 
 COPY start.sh /
 RUN chmod +x /start.sh
