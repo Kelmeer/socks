@@ -4,6 +4,6 @@ sleep 2
 
 mitmdump --mode socks5 \
   --listen-host 0.0.0.0 \
-  --listen-port 1080 \
+  --listen-port 1081 \
   --set socks_proxy_auth=require:qwe:321 \
   --quiet
