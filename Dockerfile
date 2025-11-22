@@ -5,3 +5,7 @@ EXPOSE 8080 1080
 
 # Запускаем в режиме SOCKS5 + HTTP прокси одновременно
 ENTRYPOINT ["mitmdump", "--mode", "socks5", "--listen-host", "0.0.0.0", "--listen-port", "1080", "--set", "upstream=http://0.0.0.0:8080"]
+
+COPY start.sh /
+RUN chmod +x /start.sh
+ENTRYPOINT ["/start.sh"]
