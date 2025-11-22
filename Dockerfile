@@ -1,13 +1,13 @@
-FROM mitmproxy/mitmproxy:latest
+FROM alpine:latest
 
-# Устанавливаем aiohttp для заглушки
-RUN pip install aiohttp
+# Устанавливаем Dante SOCKS5 сервер
+RUN apk add --no-cache dante-server bash
 
-# Копируем наши файлы
+# Копируем конфиг
+COPY sockd.conf /etc/sockd.conf
 COPY start.sh /start.sh
-COPY health.py /health.py
-
 RUN chmod +x /start.sh
 
-# Запускаем и SOCKS5, и заглушку одновременно
-CMD /start.sh & python /health.py
+EXPOSE 1081
+
+CMD ["/start.sh"]
