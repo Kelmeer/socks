@@ -1,9 +1,7 @@
-FROM alpine:latest
+FROM mitmproxy/mitmproxy:latest
 
-RUN apk add --no-cache curl && \
-    curl -fsSL https://github.com/v2fly/fhs/releases/download/v4.40.0/fhs-linux-amd64.tar.gz | tar -xzf - -C /usr/local/bin && \
-    mv /usr/local/bin/fhs /usr/local/bin/xray
+# Открываем порт для SOCKS5 и для обычного прокси
+EXPOSE 8080 1080
 
-COPY config.json /etc/xray/config.json
-
-CMD ["xray", "run", "-config", "/etc/xray/config.json"]
+# Запускаем в режиме SOCKS5 + HTTP прокси одновременно
+ENTRYPOINT ["mitmdump", "--mode", "socks5", "--listen-host", "0.0.0.0", "--listen-port", "1080", "--set", "upstream=http://0.0.0.0:8080"]
