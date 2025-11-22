@@ -1,7 +1,6 @@
 FROM alpine:latest
 
-RUN apk add --no-cache dante-server python3 py3-pip bash
-RUN pip3 install aiohttp
+RUN apk add --no-cache dante-server python3 py3-pip py3-aiohttp bash
 
 COPY sockd.conf /etc/sockd.conf
 COPY start.sh /start.sh
