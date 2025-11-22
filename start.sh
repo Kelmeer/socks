@@ -1,12 +1,4 @@
 #!/bin/bash
-# Ждём секунду, чтоб health.py успел подняться (на всякий случай)
-sleep 2
-
-mitmdump --mode socks5 \
-  --listen-host 0.0.0.0 \
-  --listen-port 1081 \
-  --set socks_proxy_auth=require:qwe:321 \
-  --set socks_proxy_bindaddr=0.0.0.0 \
-  --set allow_remote_hosts=true \
-  --set allow-hosts=*
-  --quiet
+# Запускаем Dante и заглушку одновременно
+sockd -f /etc/sockd.conf -D &
+python /health.py
